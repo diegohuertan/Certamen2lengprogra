@@ -111,30 +111,9 @@ func main() {
 	// Pasar el primero al ultimo y el segundo al primero
 	fmt.Println("Números guardados en el slice:", Tiempo_ejecucion)
 	fmt.Println("nombre guardados en el slice:", nombre_proceso)
-	primero_iteracion := Tiempo_ejecucion[0]
-	copy(Tiempo_ejecucion[0:], Tiempo_ejecucion[1:])
-	Tiempo_ejecucion[len(Tiempo_ejecucion)-1] = primero_iteracion
-
-	primero_nombre := nombre_proceso[0]
-	copy(nombre_proceso[0:], nombre_proceso[1:])
-	nombre_proceso[len(nombre_proceso)-1] = primero_nombre
-
-	fmt.Println("Números guardados en el slice:", Tiempo_ejecucion)
-	fmt.Println("nombre guardados en el slice:", nombre_proceso)
 
 	// Informacion del dispashe
 	fmt.Println("Contenido de dispatcher:")
-	for _, proceso := range d.colaprocesos {
-		fmt.Printf("PID: %d, Estado: %s, ContadorProg: %d, NombreProceso: %s\n",
-			proceso.pid, proceso.estado, proceso.contadorProg, proceso.nombreproceso)
-		fmt.Println("Contador dispatcher: ", d.contadorDisp)
-	}
-	primero := d.colaprocesos[0]
-	copy(d.colaprocesos[0:], d.colaprocesos[1:])
-	d.colaprocesos[len(d.colaprocesos)-1] = primero
-
-	// Informacion del dispashe movido
-	fmt.Println("Contenido de dispatcher movido:")
 	for _, proceso := range d.colaprocesos {
 		fmt.Printf("PID: %d, Estado: %s, ContadorProg: %d, NombreProceso: %s\n",
 			proceso.pid, proceso.estado, proceso.contadorProg, proceso.nombreproceso)

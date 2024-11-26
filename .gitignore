@@ -20,6 +20,6 @@
 # Go workspace file
 go.work
 go.work.sum
-
+basura.txt
 # env file
 .env
