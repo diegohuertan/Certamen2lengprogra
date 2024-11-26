@@ -70,6 +70,7 @@ func main() {
 
 	go leerArchivo("Orden_creacion.txt", lineas, numeros, &wg)
 	var Tiempo_ejecucion []int
+	var nombre_proceso []string
 
 	var wgReaders sync.WaitGroup
 	wgReaders.Add(2)
@@ -80,35 +81,64 @@ func main() {
 			Tiempo_ejecucion = append(Tiempo_ejecucion, numero)
 		}
 	}()
-
+	// Guardar nombre de los procesos en el arreglo
 	go func() {
 		defer wgReaders.Done()
 		for linea := range lineas {
 			fmt.Println(linea)
+			words := strings.Fields(linea)
+			nombre_proceso = append(nombre_proceso, words[1])
 		}
 	}()
 
 	wg.Wait()
 	wgReaders.Wait()
 	indice := 0
-	x := Tiempo_ejecucion[indice]
 	var d dispatcher
 
-	for i := 1; i <= 10; i++ {
+	for i := 1; i <= 20; i++ {
 		fmt.Println("iteracion: ", i)
-		if i == x {
-			d.agregarProceso(i, "Listo", 0, "Proceso"+strconv.Itoa(i))
-			fmt.Println("Proceso", i, "agregado a la cola de procesos")
-			x = Tiempo_ejecucion[indice+1]
+		if indice < len(Tiempo_ejecucion) {
+			x := Tiempo_ejecucion[indice]
+			if i == x {
+				d.agregarProceso(100+indice, "Listo", 0, nombre_proceso[indice])
+				fmt.Println("Proceso", nombre_proceso[indice], "agregado a la cola de procesos")
+				indice++
+			}
 		}
+		d.contadorDisp++
 	}
+	// Pasar el primero al ultimo y el segundo al primero
+	fmt.Println("Números guardados en el slice:", Tiempo_ejecucion)
+	fmt.Println("nombre guardados en el slice:", nombre_proceso)
+	primero_iteracion := Tiempo_ejecucion[0]
+	copy(Tiempo_ejecucion[0:], Tiempo_ejecucion[1:])
+	Tiempo_ejecucion[len(Tiempo_ejecucion)-1] = primero_iteracion
+
+	primero_nombre := nombre_proceso[0]
+	copy(nombre_proceso[0:], nombre_proceso[1:])
+	nombre_proceso[len(nombre_proceso)-1] = primero_nombre
 
 	fmt.Println("Números guardados en el slice:", Tiempo_ejecucion)
+	fmt.Println("nombre guardados en el slice:", nombre_proceso)
 
+	// Informacion del dispashe
 	fmt.Println("Contenido de dispatcher:")
 	for _, proceso := range d.colaprocesos {
 		fmt.Printf("PID: %d, Estado: %s, ContadorProg: %d, NombreProceso: %s\n",
 			proceso.pid, proceso.estado, proceso.contadorProg, proceso.nombreproceso)
+		fmt.Println("Contador dispatcher: ", d.contadorDisp)
+	}
+	primero := d.colaprocesos[0]
+	copy(d.colaprocesos[0:], d.colaprocesos[1:])
+	d.colaprocesos[len(d.colaprocesos)-1] = primero
+
+	// Informacion del dispashe movido
+	fmt.Println("Contenido de dispatcher movido:")
+	for _, proceso := range d.colaprocesos {
+		fmt.Printf("PID: %d, Estado: %s, ContadorProg: %d, NombreProceso: %s\n",
+			proceso.pid, proceso.estado, proceso.contadorProg, proceso.nombreproceso)
+		fmt.Println("Contador dispatcher: ", d.contadorDisp)
 	}
 
 }

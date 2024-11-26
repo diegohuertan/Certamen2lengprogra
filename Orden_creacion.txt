@@ -1,2 +1,4 @@
 1   proceso_1
 6   proceso_2
+7   proceso_3
+10  proceso_4
