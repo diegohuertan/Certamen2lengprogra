@@ -49,7 +49,9 @@ func leerArchivo(nombreArchivo string, lineas chan<- string, numeros chan<- int,
 		if len(words) > 0 {
 			numero, err := strconv.Atoi(words[0])
 			if err == nil {
-				numeros <- numero
+				for i := 1; i < len(words); i++ {
+					numeros <- numero
+				}
 			}
 		}
 	}
@@ -81,13 +83,14 @@ func main() {
 			Tiempo_ejecucion = append(Tiempo_ejecucion, numero)
 		}
 	}()
-	// Guardar nombre de los procesos en el arreglo
 	go func() {
 		defer wgReaders.Done()
 		for linea := range lineas {
-			fmt.Println(linea)
 			words := strings.Fields(linea)
-			nombre_proceso = append(nombre_proceso, words[1])
+			// Guardar todos los procesos después del primer campo (tiempo)
+			for i := 1; i < len(words); i++ {
+				nombre_proceso = append(nombre_proceso, words[i])
+			}
 		}
 	}()
 
@@ -95,21 +98,40 @@ func main() {
 	wgReaders.Wait()
 	indice := 0
 	var d dispatcher
+	fmt.Println("\n")
 
-	for i := 1; i <= 20; i++ {
-		fmt.Println("iteracion: ", i)
+	for i := 1; i <= 5; i++ {
+		fmt.Println("iteracion: ", d.contadorDisp)
 		if indice < len(Tiempo_ejecucion) {
-			x := Tiempo_ejecucion[indice]
-			if i == x {
-				d.agregarProceso(100+indice, "Listo", 0, nombre_proceso[indice])
-				fmt.Println("Proceso", nombre_proceso[indice], "agregado a la cola de procesos")
-				indice++
+			for z := 0; z < len(Tiempo_ejecucion); z++ {
+				x := Tiempo_ejecucion[z]
+				if d.contadorDisp == x {
+					d.agregarProceso(100+indice, "Listo", 0, nombre_proceso[indice])
+					fmt.Println("Proceso", nombre_proceso[indice], "agregado a la cola de procesos")
+					indice++
+				}
 			}
+		}
+
+		if i == 5 {
+			if len(d.colaprocesos) > 1 {
+				primero := d.colaprocesos[0]
+				fmt.Println("primero", primero)
+				d.colaprocesos = append(d.colaprocesos[1:], primero)
+				fmt.Println("Proceso", d.colaprocesos[0])
+
+			}
+			i = 0
+		}
+
+		if d.contadorDisp == 15 {
+			fmt.Println("cortando")
+			break
 		}
 		d.contadorDisp++
 	}
 	// Pasar el primero al ultimo y el segundo al primero
-	fmt.Println("Números guardados en el slice:", Tiempo_ejecucion)
+	fmt.Println("\nNúmeros guardados en el slice:", Tiempo_ejecucion)
 	fmt.Println("nombre guardados en el slice:", nombre_proceso)
 
 	// Informacion del dispashe
