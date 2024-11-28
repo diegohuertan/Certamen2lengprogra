@@ -64,6 +64,30 @@ func leerArchivo(nombreArchivo string, lineas chan<- string, numeros chan<- int,
 	close(numeros)
 }
 
+// funcion para leer linea
+func LeerLinea(nombreArchivo string, numeroLinea int) (string, error) {
+
+	archivo, err := os.Open(nombreArchivo)
+	if err != nil {
+		return "", fmt.Errorf("error al abrir el archivo: %v", err)
+	}
+	defer archivo.Close()
+
+	scanner := bufio.NewScanner(archivo)
+
+	lineaActual := 1
+	for scanner.Scan() {
+		if lineaActual == numeroLinea {
+			return scanner.Text(), nil
+		}
+		lineaActual++
+	}
+	if err := scanner.Err(); err != nil {
+		return "", fmt.Errorf("error al leer el archivo: %v", err)
+	}
+	return "", fmt.Errorf("línea %d no encontrada", numeroLinea)
+}
+
 func main() {
 	lineas := make(chan string)
 	numeros := make(chan int)
@@ -87,7 +111,6 @@ func main() {
 		defer wgReaders.Done()
 		for linea := range lineas {
 			words := strings.Fields(linea)
-			// Guardar todos los procesos después del primer campo (tiempo)
 			for i := 1; i < len(words); i++ {
 				nombre_proceso = append(nombre_proceso, words[i])
 			}
@@ -112,6 +135,22 @@ func main() {
 				}
 			}
 		}
+		if len(d.colaprocesos) > 0 {
+			linea, err := LeerLinea(d.colaprocesos[0].nombreproceso, d.colaprocesos[0].contadorProg+1)
+			if err != nil {
+				fmt.Println("Error:", err)
+				return
+			}
+			d.colaprocesos[0].contadorProg++
+			fmt.Println(linea)
+			if linea == "F" {
+				d.colaprocesos = d.colaprocesos[1:]
+			}
+			if len(d.colaprocesos) == 0 {
+				fmt.Println("cortando")
+				break
+			}
+		}
 
 		if i == 5 {
 			if len(d.colaprocesos) > 1 {
@@ -119,15 +158,10 @@ func main() {
 				fmt.Println("primero", primero)
 				d.colaprocesos = append(d.colaprocesos[1:], primero)
 				fmt.Println("Proceso", d.colaprocesos[0])
-
 			}
 			i = 0
 		}
 
-		if d.contadorDisp == 15 {
-			fmt.Println("cortando")
-			break
-		}
 		d.contadorDisp++
 	}
 	// Pasar el primero al ultimo y el segundo al primero
