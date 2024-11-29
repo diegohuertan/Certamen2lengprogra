@@ -25,10 +25,6 @@ func (d *dispatcher) agregarProceso(pid int, estado string, contadorProg int, no
 	d.colaprocesos = append(d.colaprocesos, bcp{pid, estado, contadorProg, nombreproceso})
 }
 
-func (d *dispatcher) ejecutarDispatcher(procesoActual chan bcp, tiempoEjecucion int) {
-
-}
-
 func leerArchivo(nombreArchivo string, lineas chan<- string, numeros chan<- int, wg *sync.WaitGroup) {
 	defer wg.Done()
 	file, err := os.Open(nombreArchivo)
@@ -87,6 +83,48 @@ func LeerLinea(nombreArchivo string, numeroLinea int) (string, error) {
 	}
 	return "", fmt.Errorf("línea %d no encontrada", numeroLinea)
 }
+func procesarDispatcher(d *dispatcher, Tiempo_ejecucion []int, nombre_proceso []string, wg *sync.WaitGroup) {
+	defer wg.Done()
+	indice := 0
+	for i := 1; i <= 5; i++ {
+		if indice < len(Tiempo_ejecucion) {
+			for z := 0; z < len(Tiempo_ejecucion); z++ {
+				x := Tiempo_ejecucion[z]
+				if d.contadorDisp == x {
+					d.agregarProceso(100+indice, "Listo", 0, nombre_proceso[indice])
+					fmt.Println("Proceso", nombre_proceso[indice], "agregado a la cola de procesos")
+					indice++
+				}
+			}
+		}
+		if len(d.colaprocesos) > 0 {
+			linea, err := LeerLinea(d.colaprocesos[0].nombreproceso, d.colaprocesos[0].contadorProg+1)
+			if err != nil {
+				fmt.Println("Error:", err)
+				return
+			}
+			d.colaprocesos[0].contadorProg++
+			fmt.Println("iteracion: ", d.contadorDisp, linea)
+			if linea == "F" {
+				d.colaprocesos = d.colaprocesos[1:]
+			}
+			if len(d.colaprocesos) == 0 {
+				fmt.Println("cortando")
+				break
+			}
+		}
+
+		if i == 5 {
+			if len(d.colaprocesos) > 1 {
+				primero := d.colaprocesos[0]
+				d.colaprocesos = append(d.colaprocesos[1:], primero)
+			}
+			i = 0
+		}
+
+		d.contadorDisp++
+	}
+}
 
 func main() {
 	lineas := make(chan string)
@@ -119,61 +157,21 @@ func main() {
 
 	wg.Wait()
 	wgReaders.Wait()
-	indice := 0
+
 	var d dispatcher
-	fmt.Println("\n")
+	wg.Add(1)
+	go procesarDispatcher(&d, Tiempo_ejecucion, nombre_proceso, &wg)
 
-	for i := 1; i <= 5; i++ {
-		fmt.Println("iteracion: ", d.contadorDisp)
-		if indice < len(Tiempo_ejecucion) {
-			for z := 0; z < len(Tiempo_ejecucion); z++ {
-				x := Tiempo_ejecucion[z]
-				if d.contadorDisp == x {
-					d.agregarProceso(100+indice, "Listo", 0, nombre_proceso[indice])
-					fmt.Println("Proceso", nombre_proceso[indice], "agregado a la cola de procesos")
-					indice++
-				}
-			}
-		}
-		if len(d.colaprocesos) > 0 {
-			linea, err := LeerLinea(d.colaprocesos[0].nombreproceso, d.colaprocesos[0].contadorProg+1)
-			if err != nil {
-				fmt.Println("Error:", err)
-				return
-			}
-			d.colaprocesos[0].contadorProg++
-			fmt.Println(linea)
-			if linea == "F" {
-				d.colaprocesos = d.colaprocesos[1:]
-			}
-			if len(d.colaprocesos) == 0 {
-				fmt.Println("cortando")
-				break
-			}
-		}
+	wg.Wait()
 
-		if i == 5 {
-			if len(d.colaprocesos) > 1 {
-				primero := d.colaprocesos[0]
-				fmt.Println("primero", primero)
-				d.colaprocesos = append(d.colaprocesos[1:], primero)
-				fmt.Println("Proceso", d.colaprocesos[0])
-			}
-			i = 0
-		}
-
-		d.contadorDisp++
-	}
-	// Pasar el primero al ultimo y el segundo al primero
 	fmt.Println("\nNúmeros guardados en el slice:", Tiempo_ejecucion)
 	fmt.Println("nombre guardados en el slice:", nombre_proceso)
 
-	// Informacion del dispashe
+	// Informacion del dispatcher
 	fmt.Println("Contenido de dispatcher:")
 	for _, proceso := range d.colaprocesos {
 		fmt.Printf("PID: %d, Estado: %s, ContadorProg: %d, NombreProceso: %s\n",
 			proceso.pid, proceso.estado, proceso.contadorProg, proceso.nombreproceso)
 		fmt.Println("Contador dispatcher: ", d.contadorDisp)
 	}
-
 }

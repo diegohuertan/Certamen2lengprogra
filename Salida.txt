@@ -1,0 +1,97 @@
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+2					 |proceso_1					proceso_1				2
+3					 |proceso_1					proceso_1				3
+4					 |proceso_1					proceso_1				4
+5					 |proceso_1					proceso_1				5
+6					 |proceso_1					proceso_1				6
+7					 |proceso_1					proceso_1				7
+8					 |proceso_1					proceso_1				8
+9					 F					proceso_1				9
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+2					 |proceso_1					proceso_1				2
+3					 |proceso_1					proceso_1				3
+4					 |proceso_1					proceso_1				4
+5					 |proceso_1					proceso_1				5
+6					 |proceso_1					proceso_1				6
+7					 |proceso_1					proceso_1				7
+8					 |proceso_1					proceso_1				8
+9					 F					proceso_1				9
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+2					 |proceso_1					proceso_1				2
+3					 |proceso_1					proceso_1				3
+4					 |proceso_1					proceso_1				4
+5					 |proceso_1					proceso_1				5
+6					 |proceso_1					proceso_1				6
+7					 |proceso_1					proceso_1				7
+8					 |proceso_1					proceso_1				8
+9					 F					proceso_1				9
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+2					 |proceso_1					proceso_1				2
+3					 |proceso_1					proceso_1				3
+4					 |proceso_1					proceso_1				4
+5					 |proceso_1					proceso_1				5
+6					 |proceso_1					proceso_1				6
+7					 |proceso_1					proceso_1				7
+8					 |proceso_1					proceso_1				8
+9					 F					proceso_1				9
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+2					 |proceso_1					proceso_1				2
+3					 |proceso_1					proceso_1				3
+4					 |proceso_1					proceso_1				4
+5					 |proceso_1					proceso_1				5
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+2					 |proceso_1					proceso_1				2
+3					 |proceso_1					proceso_1				3
+4					 |proceso_1					proceso_1				4
+5					 |proceso_1					proceso_1				5
+6					 |proceso_1					proceso_1				6
+7					 |proceso_1					proceso_1				7
+8					 |proceso_1					proceso_1				8
+9					 F					proceso_1				9
+#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+1					 |proceso_1					proceso_1				1
+2					 |proceso_1					proceso_1				2
+3					 |proceso_1					proceso_1				3
+4					 |proceso_1					proceso_1				4
+5					 |proceso_1					proceso_1				5
+6					 |proceso_1					proceso_1				6
+7					 |proceso_1					proceso_1				7
+8					 |proceso_1					proceso_1				8
+9					 F					proceso_1				9
