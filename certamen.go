@@ -14,15 +14,17 @@ type bcp struct {
 	estado        string
 	contadorProg  int
 	nombreproceso string
+	tiempoBloqueo int
 }
 
 type dispatcher struct {
-	colaprocesos []bcp
-	contadorDisp int
+	colaprocesos   []bcp
+	colabloqueados []bcp
+	contadorDisp   int
 }
 
 func (d *dispatcher) agregarProceso(pid int, estado string, contadorProg int, nombreproceso string) {
-	d.colaprocesos = append(d.colaprocesos, bcp{pid, estado, contadorProg, nombreproceso})
+	d.colaprocesos = append(d.colaprocesos, bcp{pid, estado, contadorProg, nombreproceso, 0})
 }
 
 func leerArchivo(nombreArchivo string, lineas chan<- string, numeros chan<- int, wg *sync.WaitGroup) {
@@ -108,6 +110,31 @@ func procesarDispatcher(d *dispatcher, Tiempo_ejecucion []int, nombre_proceso []
 			if linea == "F" {
 				d.colaprocesos = d.colaprocesos[1:]
 			}
+
+			if strings.HasPrefix(linea, "E/S") {
+				words := strings.Fields(linea)
+				if len(words) > 1 {
+					numero, err := strconv.Atoi(words[1])
+					if err == nil {
+						// Bloquear el proceso usando el número
+						d.colabloqueados = append(d.colabloqueados, d.colaprocesos[0])
+						d.colaprocesos = d.colaprocesos[1:]
+						d.colabloqueados[0].tiempoBloqueo = numero
+					} else {
+						fmt.Println("Error al convertir el número:", err)
+					}
+				}
+			}
+
+			if len(d.colabloqueados) > 0 {
+				d.colabloqueados[0].tiempoBloqueo--
+				if d.colabloqueados[0].tiempoBloqueo == 0 {
+					d.colaprocesos = append([]bcp{d.colabloqueados[0]}, d.colaprocesos...)
+					d.colabloqueados = d.colabloqueados[1:]
+					fmt.Println("orden cola", d.colaprocesos)
+				}
+			}
+
 			if len(d.colaprocesos) == 0 {
 				fmt.Println("cortando")
 				break
