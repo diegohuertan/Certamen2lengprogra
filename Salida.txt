@@ -1,97 +1,328 @@
 #Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
+0						PULL					Dispacher 
+1						LOAD					proceso_1
+2						EXEC					Dispacher 
+3						|proceso_1					proceso_1
+4						|proceso_1					proceso_1
+5						|proceso_1					proceso_1
+6						|proceso_1					proceso_1
+7						|proceso_1					proceso_1
+7						PULL					Dispacher 
+8						LOAD					 proceso_2
+9						EXEC					Dispacher 
+11						|proceso_2					proceso_2
+12						|proceso_2					proceso_2
+13						|proceso_2					proceso_2
+14						|proceso_2					proceso_2
+15						|proceso_2					proceso_2
+15						PULL					Dispacher 
+16						LOAD					 proceso_3
+17						EXEC					Dispacher 
+19						|proceso_3					proceso_3
+20						|proceso_3					proceso_3
+21						|proceso_3					proceso_3
+22						|proceso_3					proceso_3
+23						|proceso_3					proceso_3
+23						PULL					Dispacher 
+24						LOAD					 proceso_1
+25						EXEC					Dispacher 
+27						|proceso_1					proceso_1
+28						|proceso_1					proceso_1
+29						|proceso_1					proceso_1
+30						F					proceso_1
+31						|proceso_2 2					proceso_2
+31						PULL					Dispacher 
+32						LOAD					 proceso_3
+33						EXEC					Dispacher 
+35						|proceso_3 2					proceso_3
+36						|proceso_3 2					proceso_3
+37						|proceso_3 2					proceso_3
+38						|proceso_3 2					proceso_3
+39						|proceso_3 2					proceso_3
+39						PULL					Dispacher 
+40						LOAD					 proceso_2
+41						EXEC					Dispacher 
+43						|proceso_2 2					proceso_2
+44						|proceso_2 2					proceso_2
+45						|proceso_2 2					proceso_2
+46						|proceso_2 2					proceso_2
+47						|proceso_2 2					proceso_2
+47						PULL					Dispacher 
+48						LOAD					 proceso_3
+49						EXEC					Dispacher 
+51						|proceso_3 2					proceso_3
+52						|proceso_3 2					proceso_3
+53						F					proceso_3
+54						|proceso_2 2					proceso_2
+55						F					proceso_2
 #Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
+0						PULL					Dispacher 
+1						LOAD					proceso_1
+2						EXEC					Dispacher 
+3						|proceso_1					proceso_1
+4						|proceso_1					proceso_1
+5						|proceso_1					proceso_1
+6						|proceso_1					proceso_1
+7						|proceso_1					proceso_1
+7						PULL					Dispacher 
+8						LOAD					 proceso_2
+9						EXEC					Dispacher 
+11						|proceso_2					proceso_2
+12						|proceso_2					proceso_2
+13						|proceso_2					proceso_2
+14						|proceso_2					proceso_2
+15						|proceso_2					proceso_2
+15						PULL					Dispacher 
+16						LOAD					 proceso_3
+17						EXEC					Dispacher 
+19						|proceso_3					proceso_3
+20						|proceso_3					proceso_3
+21						|proceso_3					proceso_3
+22						|proceso_3					proceso_3
+23						|proceso_3					proceso_3
+23						PULL					Dispacher 
+24						LOAD					 proceso_1
+25						EXEC					Dispacher 
+27						|proceso_1					proceso_1
+28						|proceso_1					proceso_1
+29						|proceso_1					proceso_1
+30						F					proceso_1
+31						|proceso_2 2					proceso_2
+32						|proceso_2 2					proceso_2
+33						|proceso_2 2					proceso_2
+34						|proceso_2 2					proceso_2
+34						PULL					Dispacher 
+35						LOAD					 proceso_3
+36						EXEC					Dispacher 
+38						|proceso_3 2					proceso_3
+39						|proceso_3 2					proceso_3
+40						|proceso_3 2					proceso_3
+41						|proceso_3 2					proceso_3
+42						|proceso_3 2					proceso_3
+42						PULL					Dispacher 
+43						LOAD					 proceso_2
+44						EXEC					Dispacher 
+46						|proceso_2 2					proceso_2
+47						|proceso_2 2					proceso_2
+48						|proceso_2 2					proceso_2
+49						F					proceso_2
+50						|proceso_3 2					proceso_3
+51						|proceso_3 2					proceso_3
+52						F					proceso_3
 #Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+0						PULL					Dispacher 
+1						LOAD					proceso_1
+2						EXEC					Dispacher 
+3						|proceso_1					proceso_1
+4						|proceso_1					proceso_1
+5						|proceso_1					proceso_1
+6						|proceso_1					proceso_1
+7						|proceso_1					proceso_1
+7						PULL					Dispacher 
+8						LOAD					 proceso_2
+9						EXEC					Dispacher 
+11						|proceso_2					proceso_2
+12						|proceso_2					proceso_2
+13						|proceso_2					proceso_2
+14						|proceso_2					proceso_2
+15						|proceso_2					proceso_2
+15						PULL					Dispacher 
+16						LOAD					 proceso_3
+17						EXEC					Dispacher 
+19						|proceso_3					proceso_3
+20						|proceso_3					proceso_3
+21						|proceso_3					proceso_3
+22						|proceso_3					proceso_3
+23						|proceso_3					proceso_3
+23						PULL					Dispacher 
+24						LOAD					 proceso_1
+25						EXEC					Dispacher 
+27						|proceso_1					proceso_1
+28						|proceso_1					proceso_1
+29						|proceso_1					proceso_1
+30						F					proceso_1
+31						|proceso_2 2					proceso_2
+32						|proceso_2 2					proceso_2
+33						|proceso_2 2					proceso_2
+34						|proceso_2 2					proceso_2
+35						|proceso_2 2					proceso_2
+35						PULL					Dispacher 
+36						LOAD					 proceso_3
+37						EXEC					Dispacher 
+39						|proceso_3 2					proceso_3
+40						|proceso_3 2					proceso_3
+41						|proceso_3 2					proceso_3
+42						|proceso_3 2					proceso_3
+43						|proceso_3 2					proceso_3
+43						PULL					Dispacher 
+44						LOAD					 proceso_2
+45						EXEC					Dispacher 
+47						|proceso_2 2					proceso_2
+48						|proceso_2 2					proceso_2
+49						F					proceso_2
+50						|proceso_3 2					proceso_3
+51						|proceso_3 2					proceso_3
+52						F					proceso_3
 #Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+0						PULL					Dispacher 
+1						LOAD					proceso_1
+2						EXEC					Dispacher 
+3						|proceso_1					proceso_1
+4						|proceso_1					proceso_1
+5						|proceso_1					proceso_1
+6						|proceso_1					proceso_1
+7						|proceso_1					proceso_1
+7						PULL					Dispacher 
+8						LOAD					 proceso_2
+9						EXEC					Dispacher 
+11						|proceso_2					proceso_2
+12						|proceso_2					proceso_2
+13						|proceso_2					proceso_2
+14						|proceso_2					proceso_2
+15						|proceso_2					proceso_2
+15						PULL					Dispacher 
+16						LOAD					 proceso_3
+17						EXEC					Dispacher 
+19						|proceso_3					proceso_3
+20						|proceso_3					proceso_3
+21						|proceso_3					proceso_3
+22						|proceso_3					proceso_3
+23						|proceso_3					proceso_3
+23						PULL					Dispacher 
+24						LOAD					 proceso_1
+25						EXEC					Dispacher 
+27						E/S 2					proceso_1
+28						|proceso_2 2					proceso_2
+29						|proceso_1					proceso_1
+30						|proceso_1					proceso_1
+31						|proceso_1					proceso_1
+31						PULL					Dispacher 
+32						LOAD					 proceso_2
+33						EXEC					Dispacher 
+35						|proceso_2 2					proceso_2
+36						|proceso_2 2					proceso_2
+37						|proceso_2 2					proceso_2
+38						|proceso_2 2					proceso_2
+39						|proceso_2 2					proceso_2
+39						PULL					Dispacher 
+40						LOAD					 proceso_3
+41						EXEC					Dispacher 
+43						|proceso_3 2					proceso_3
+44						|proceso_3 2					proceso_3
+45						|proceso_3 2					proceso_3
+46						|proceso_3 2					proceso_3
+47						|proceso_3 2					proceso_3
+47						PULL					Dispacher 
+48						LOAD					 proceso_1
+49						EXEC					Dispacher 
+51						F					proceso_1
+52						|proceso_2 2					proceso_2
+53						F					proceso_2
+54						|proceso_3 2					proceso_3
+55						|proceso_3 2					proceso_3
+56						F					proceso_3
 #Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
+0						PULL					Dispacher 
+1						LOAD					proceso_1
+2						EXEC					Dispacher 
+3						|proceso_1					proceso_1
+4						|proceso_1					proceso_1
+5						|proceso_1					proceso_1
+6						|proceso_1					proceso_1
+7						|proceso_1					proceso_1
+7						PULL					Dispacher 
+8						LOAD					 proceso_2
+9						EXEC					Dispacher 
+11						|proceso_2					proceso_2
+12						|proceso_2					proceso_2
+13						|proceso_2					proceso_2
+14						|proceso_2					proceso_2
+15						|proceso_2					proceso_2
+15						PULL					Dispacher 
+16						LOAD					 proceso_3
+17						EXEC					Dispacher 
+19						|proceso_3					proceso_3
+20						|proceso_3					proceso_3
+21						|proceso_3					proceso_3
+22						|proceso_3					proceso_3
+23						|proceso_3					proceso_3
+23						PULL					Dispacher 
+24						LOAD					 proceso_1
+25						EXEC					Dispacher 
+27						E/S 2					proceso_1
+28						|proceso_2 2					proceso_2
+29						DESBLOQUEADO					proceso_1
+30						|proceso_1					proceso_1
+31						|proceso_1					proceso_1
+31						PULL					Dispacher 
+32						LOAD					 proceso_2
+33						EXEC					Dispacher 
+35						|proceso_2 2					proceso_2
+36						|proceso_2 2					proceso_2
+37						|proceso_2 2					proceso_2
+38						|proceso_2 2					proceso_2
+39						|proceso_2 2					proceso_2
+39						PULL					Dispacher 
+40						LOAD					 proceso_3
+41						EXEC					Dispacher 
+43						|proceso_3 2					proceso_3
+44						|proceso_3 2					proceso_3
+45						|proceso_3 2					proceso_3
+46						|proceso_3 2					proceso_3
+47						|proceso_3 2					proceso_3
+47						PULL					Dispacher 
+48						LOAD					 proceso_1
+49						EXEC					Dispacher 
+51						|proceso_1					proceso_1
+52						F					proceso_1
+53						|proceso_2 2					proceso_2
+54						F					proceso_2
+55						|proceso_3 2					proceso_3
+56						|proceso_3 2					proceso_3
+57						F					proceso_3
 #Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-2					 |proceso_1					proceso_1				2
-3					 |proceso_1					proceso_1				3
-4					 |proceso_1					proceso_1				4
-5					 |proceso_1					proceso_1				5
-6					 |proceso_1					proceso_1				6
-7					 |proceso_1					proceso_1				7
-8					 |proceso_1					proceso_1				8
-9					 F					proceso_1				9
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-2					 |proceso_1					proceso_1				2
-3					 |proceso_1					proceso_1				3
-4					 |proceso_1					proceso_1				4
-5					 |proceso_1					proceso_1				5
-6					 |proceso_1					proceso_1				6
-7					 |proceso_1					proceso_1				7
-8					 |proceso_1					proceso_1				8
-9					 F					proceso_1				9
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-2					 |proceso_1					proceso_1				2
-3					 |proceso_1					proceso_1				3
-4					 |proceso_1					proceso_1				4
-5					 |proceso_1					proceso_1				5
-6					 |proceso_1					proceso_1				6
-7					 |proceso_1					proceso_1				7
-8					 |proceso_1					proceso_1				8
-9					 F					proceso_1				9
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-2					 |proceso_1					proceso_1				2
-3					 |proceso_1					proceso_1				3
-4					 |proceso_1					proceso_1				4
-5					 |proceso_1					proceso_1				5
-6					 |proceso_1					proceso_1				6
-7					 |proceso_1					proceso_1				7
-8					 |proceso_1					proceso_1				8
-9					 F					proceso_1				9
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-2					 |proceso_1					proceso_1				2
-3					 |proceso_1					proceso_1				3
-4					 |proceso_1					proceso_1				4
-5					 |proceso_1					proceso_1				5
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-2					 |proceso_1					proceso_1				2
-3					 |proceso_1					proceso_1				3
-4					 |proceso_1					proceso_1				4
-5					 |proceso_1					proceso_1				5
-6					 |proceso_1					proceso_1				6
-7					 |proceso_1					proceso_1				7
-8					 |proceso_1					proceso_1				8
-9					 F					proceso_1				9
-#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP
-1					 |proceso_1					proceso_1				1
-2					 |proceso_1					proceso_1				2
-3					 |proceso_1					proceso_1				3
-4					 |proceso_1					proceso_1				4
-5					 |proceso_1					proceso_1				5
-6					 |proceso_1					proceso_1				6
-7					 |proceso_1					proceso_1				7
-8					 |proceso_1					proceso_1				8
-9					 F					proceso_1				9
+0						PULL					Dispacher 
+1						LOAD					proceso_1
+2						EXEC					Dispacher 
+3						|proceso_1					proceso_1
+4						|proceso_1					proceso_1
+5						|proceso_1					proceso_1
+6						|proceso_1					proceso_1
+7						|proceso_1					proceso_1
+7						PULL					Dispacher 
+8						LOAD					 proceso_2
+9						EXEC					Dispacher 
+11						|proceso_2					proceso_2
+12						|proceso_2					proceso_2
+13						|proceso_2					proceso_2
+14						|proceso_2					proceso_2
+15						|proceso_2					proceso_2
+15						PULL					Dispacher 
+16						LOAD					 proceso_3
+17						EXEC					Dispacher 
+19						|proceso_3					proceso_3
+20						|proceso_3					proceso_3
+21						|proceso_3					proceso_3
+22						|proceso_3					proceso_3
+23						|proceso_3					proceso_3
+23						PULL					Dispacher 
+24						LOAD					 proceso_1
+25						EXEC					Dispacher 
+27						E/S 2					proceso_1
+28						E/S 4					proceso_2
+29						|proceso_3 2					proceso_3
+30						|proceso_3 2					proceso_3
+31						|proceso_3 2					proceso_3
+31						PULL					Dispacher 
+32						LOAD					 proceso_3
+33						EXEC					Dispacher 
+35						|proceso_3 2					proceso_3
+36						|proceso_3 2					proceso_3
+37						|proceso_3 2					proceso_3
+38						|proceso_3 2					proceso_3
+39						F					proceso_3
+40						DESBLOQUEADO					proceso_1
+41						|proceso_1					proceso_1
+42						|proceso_1					proceso_1
+43						|proceso_1					proceso_1
+44						F					proceso_1

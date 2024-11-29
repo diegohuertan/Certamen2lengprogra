@@ -88,27 +88,37 @@ func LeerLinea(nombreArchivo string, numeroLinea int) (string, error) {
 func procesarDispatcher(d *dispatcher, Tiempo_ejecucion []int, nombre_proceso []string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	indice := 0
+	AgregarLinea("Salida.txt", strconv.Itoa(d.contadorDisp)+"						PULL					Dispacher ")
+	d.contadorDisp++
+	AgregarLinea("Salida.txt", strconv.Itoa(d.contadorDisp)+"						LOAD					proceso_1")
+	d.contadorDisp++
+	AgregarLinea("Salida.txt", strconv.Itoa(d.contadorDisp)+"						EXEC					Dispacher ")
+	d.contadorDisp++
 	for i := 1; i <= 5; i++ {
 		if indice < len(Tiempo_ejecucion) {
 			for z := 0; z < len(Tiempo_ejecucion); z++ {
 				x := Tiempo_ejecucion[z]
-				if d.contadorDisp == x {
+				if d.contadorDisp == x || d.contadorDisp > x {
 					d.agregarProceso(100+indice, "Listo", 0, nombre_proceso[indice])
 					fmt.Println("Proceso", nombre_proceso[indice], "agregado a la cola de procesos")
 					indice++
 				}
 			}
 		}
+
 		if len(d.colaprocesos) > 0 {
 			linea, err := LeerLinea(d.colaprocesos[0].nombreproceso, d.colaprocesos[0].contadorProg+1)
 			if err != nil {
 				fmt.Println("Error:", err)
 				return
 			}
+
 			d.colaprocesos[0].contadorProg++
 			fmt.Println("iteracion: ", d.contadorDisp, linea)
+			AgregarLinea("Salida.txt", strconv.Itoa(d.contadorDisp)+"						"+linea+"					"+d.colaprocesos[0].nombreproceso)
 			if linea == "F" {
 				d.colaprocesos = d.colaprocesos[1:]
+				i = 0
 			}
 
 			if strings.HasPrefix(linea, "E/S") {
@@ -146,10 +156,37 @@ func procesarDispatcher(d *dispatcher, Tiempo_ejecucion []int, nombre_proceso []
 				d.colaprocesos = append(d.colaprocesos[1:], primero)
 			}
 			i = 0
+			AgregarLinea("Salida.txt", strconv.Itoa(d.contadorDisp)+"						PULL					Dispacher ")
+			d.contadorDisp++
+			AgregarLinea("Salida.txt", strconv.Itoa(d.contadorDisp)+"						LOAD					 "+d.colaprocesos[0].nombreproceso)
+			d.contadorDisp++
+			AgregarLinea("Salida.txt", strconv.Itoa(d.contadorDisp)+"						EXEC					Dispacher ")
+			d.contadorDisp++
 		}
 
 		d.contadorDisp++
 	}
+}
+
+func AgregarLinea(rutaArchivo, linea string) error {
+	archivo, err := os.OpenFile(rutaArchivo, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return fmt.Errorf("error al abrir el archivo: %v", err)
+	}
+	defer archivo.Close()
+
+	escritor := bufio.NewWriter(archivo)
+
+	_, err = escritor.WriteString(linea + "\n")
+	if err != nil {
+		return fmt.Errorf("error al escribir en el archivo: %v", err)
+	}
+	err = escritor.Flush()
+	if err != nil {
+		return fmt.Errorf("error al flush del búfer: %v", err)
+	}
+
+	return nil
 }
 
 func main() {
@@ -186,6 +223,8 @@ func main() {
 
 	var d dispatcher
 	wg.Add(1)
+
+	AgregarLinea("Salida.txt", "#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP")
 	go procesarDispatcher(&d, Tiempo_ejecucion, nombre_proceso, &wg)
 
 	wg.Wait()
