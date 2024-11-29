@@ -221,13 +221,11 @@ func main() {
 	var d dispatcher
 	d.contadorDisp = 1
 	procesoActual := make(chan *bcp, len(Tiempo_ejecucion))
-	procesoActual1 := make(chan *bcp, len(Tiempo_ejecucion))
 	done := make(chan bool)
 	procesoFinalizado := make(chan bool)
 	wg.Add(1)
 
 	go d.ejecutarProceso(procesoActual, 5, done, procesoFinalizado, &wg)
-	go d.ejecutarProceso(procesoActual1, 5, done, procesoFinalizado, &wg)
 
 	for i := 1; i < 6; i++ {
 
@@ -269,8 +267,8 @@ func main() {
 				for {
 					wg.Add(1)
 					proceso := &d.colaprocesos[0]
-					procesoActual1 <- proceso
-					<-done
+					d.colaprocesos = append(d.colaprocesos[1:], *proceso)
+					procesoActual <- proceso
 				}
 			} else {
 				fmt.Println("No hay más procesos en la cola")
