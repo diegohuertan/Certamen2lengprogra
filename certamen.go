@@ -90,21 +90,29 @@ func (d *dispatcher) ejecutarProceso(procesoActual <-chan *bcp, tiempoEjecucion 
 				}
 				d.contadorDisp++
 				proceso.contadorProg++
-				d.colaprocesos[1].contadorProg = d.colaprocesos[1].contadorProg + 1
-				fmt.Println(scanner.Text())
+				if len(d.colaprocesos) > 1 {
+					d.colaprocesos[1].contadorProg = d.colaprocesos[1].contadorProg + 1
+				} else {
+					d.colaprocesos[0].contadorProg = d.colaprocesos[0].contadorProg + 0
+				}
 
+				fmt.Println(scanner.Text())
 				if strings.HasPrefix(scanner.Text(), "F") {
-					go d.finalizarProceso(procesoFinalizado)
-					done <- true
-					break
+					if len(d.colaprocesos) > 1 {
+						d.colaprocesos[1].estado = "Finalizado"
+						done <- true
+						break
+					} else {
+						d.colaprocesos[0].estado = "Finalizado"
+						done <- true
+						break
+					}
+
 				}
 
 				lineasEjecutadas++
 				if lineasEjecutadas == tiempoEjecucion {
-					proceso.contadorProg = linea + 1
 					fmt.Printf("Contador actualizado del proceso %d: %d\n", proceso.pid, proceso.contadorProg)
-					d.contadorDisp++
-					fmt.Printf("Contador del dispatcher actualizado: %d\n", d.contadorDisp)
 					done <- true
 					break
 				}
@@ -213,11 +221,13 @@ func main() {
 	var d dispatcher
 	d.contadorDisp = 1
 	procesoActual := make(chan *bcp, len(Tiempo_ejecucion))
+	procesoActual1 := make(chan *bcp, len(Tiempo_ejecucion))
 	done := make(chan bool)
 	procesoFinalizado := make(chan bool)
 	wg.Add(1)
 
 	go d.ejecutarProceso(procesoActual, 5, done, procesoFinalizado, &wg)
+	go d.ejecutarProceso(procesoActual1, 5, done, procesoFinalizado, &wg)
 
 	for i := 1; i < 6; i++ {
 
@@ -247,30 +257,20 @@ func main() {
 			if err != nil || err2 != nil || err3 != nil {
 				fmt.Println("Error al agregar línea:", err)
 			}
-		}
-		if len(d.colaprocesos) == 0 {
-			proceso := &d.colaprocesos[0]
-			procesoActual <- proceso
-			<-done
-
-		}
-		if len(d.colaprocesos) > 1 {
 			proceso := &d.colaprocesos[0]
 			d.colaprocesos = append(d.colaprocesos[1:], *proceso)
 			procesoActual <- proceso
 			<-done
 		}
-
 		select {
 		case <-procesoFinalizado:
 			fmt.Println("Un proceso ha finalizado")
-			// Reiniciar la goroutine para continuar con el siguiente proceso
-			if len(d.colaprocesos) > 0 {
+			if len(d.colaprocesos) == 1 {
 				for {
 					wg.Add(1)
-					go d.ejecutarProceso(procesoActual, 5, done, procesoFinalizado, &wg)
 					proceso := &d.colaprocesos[0]
-					procesoActual <- proceso
+					procesoActual1 <- proceso
+					<-done
 				}
 			} else {
 				fmt.Println("No hay más procesos en la cola")
