@@ -30,7 +30,7 @@ func (d *dispatcher) ejecutarDispatcher(procesoActual chan bcp, tiempoEjecucion 
 
 }
 
-func (d *dispatcher) bloquearProceso(tiempoEnbloqueo int) {
+func (d *dispatcher) bloquearProceso() {
 	procesoBloqueado := d.colaprocesos[0]
 	d.colabloqueados = append(d.colabloqueados, procesoBloqueado)
 	d.colaprocesos = d.colaprocesos[1:]
@@ -43,7 +43,15 @@ func (d *dispatcher) desbloquearProceso() {
 	d.colabloqueados = d.colabloqueados[1:]
 }
 
-func (d *dispatcher) ejecutarProceso(procesoActual <-chan *bcp, tiempoEjecucion int, done chan<- bool, wg *sync.WaitGroup) {
+func (d *dispatcher) finalizarProceso(procesoFinalizado chan<- bool) {
+	go func() {
+		d.colaprocesos[0].estado = "Finalizado"
+		d.colaprocesos = d.colaprocesos[1:]
+		procesoFinalizado <- true
+	}()
+}
+
+func (d *dispatcher) ejecutarProceso(procesoActual <-chan *bcp, tiempoEjecucion int, done chan<- bool, procesoFinalizado chan<- bool, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	for proceso := range procesoActual {
@@ -70,21 +78,6 @@ func (d *dispatcher) ejecutarProceso(procesoActual <-chan *bcp, tiempoEjecucion 
 			}
 			if encontrado {
 
-				if strings.HasPrefix(scanner.Text(), "E/S") {
-					words := strings.Fields(scanner.Text())
-					if len(words) > 1 {
-						var err error
-						tiempoBloqueo, err = strconv.Atoi(words[1])
-						if err == nil {
-							fmt.Printf("Valor de E/S: %d\n", tiempoBloqueo)
-							d.bloquearProceso(tiempoBloqueo)
-							break
-						} else {
-							fmt.Println("Error al convertir el número:", err)
-						}
-					}
-				}
-
 				if d.contadorDisp == tiempoBloqueo {
 					d.desbloquearProceso()
 					tiempoBloqueo = 0
@@ -99,15 +92,19 @@ func (d *dispatcher) ejecutarProceso(procesoActual <-chan *bcp, tiempoEjecucion 
 				proceso.contadorProg++
 				d.colaprocesos[1].contadorProg = d.colaprocesos[1].contadorProg + 1
 				fmt.Println(scanner.Text())
+
 				if strings.HasPrefix(scanner.Text(), "F") {
-					d.colaprocesos[1].estado = "Finalizado"
+					go d.finalizarProceso(procesoFinalizado)
 					done <- true
 					break
 				}
 
 				lineasEjecutadas++
 				if lineasEjecutadas == tiempoEjecucion {
+					proceso.contadorProg = linea + 1
 					fmt.Printf("Contador actualizado del proceso %d: %d\n", proceso.pid, proceso.contadorProg)
+					d.contadorDisp++
+					fmt.Printf("Contador del dispatcher actualizado: %d\n", d.contadorDisp)
 					done <- true
 					break
 				}
@@ -217,9 +214,10 @@ func main() {
 	d.contadorDisp = 1
 	procesoActual := make(chan *bcp, len(Tiempo_ejecucion))
 	done := make(chan bool)
+	procesoFinalizado := make(chan bool)
 	wg.Add(1)
 
-	go d.ejecutarProceso(procesoActual, 5, done, &wg)
+	go d.ejecutarProceso(procesoActual, 5, done, procesoFinalizado, &wg)
 
 	for i := 1; i < 6; i++ {
 
@@ -262,11 +260,22 @@ func main() {
 			procesoActual <- proceso
 			<-done
 		}
-		for o := 0; o < len(d.colaprocesos); o++ {
-			if d.colaprocesos[o].estado == "Finalizado" {
-				d.colaprocesos = append(d.colaprocesos[:o], d.colaprocesos[o+1:]...)
 
+		select {
+		case <-procesoFinalizado:
+			fmt.Println("Un proceso ha finalizado")
+			// Reiniciar la goroutine para continuar con el siguiente proceso
+			if len(d.colaprocesos) > 0 {
+				for {
+					wg.Add(1)
+					go d.ejecutarProceso(procesoActual, 5, done, procesoFinalizado, &wg)
+					proceso := &d.colaprocesos[0]
+					procesoActual <- proceso
+				}
+			} else {
+				fmt.Println("No hay más procesos en la cola")
 			}
+		default:
 		}
 
 	}
@@ -275,6 +284,7 @@ func main() {
 	close(procesoActual)
 	wg.Wait()
 	close(done)
+	close(procesoFinalizado)
 
 	// Información final del dispatcher
 	fmt.Println("Números guardados en el slice:", Tiempo_ejecucion)
