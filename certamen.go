@@ -131,7 +131,6 @@ func procesarDispatcher(d *dispatcher, Tiempo_ejecucion []int, nombre_proceso []
 				if d.colabloqueados[0].tiempoBloqueo == 0 {
 					d.colaprocesos = append([]bcp{d.colabloqueados[0]}, d.colaprocesos...)
 					d.colabloqueados = d.colabloqueados[1:]
-					fmt.Println("orden cola", d.colaprocesos)
 				}
 			}
 
