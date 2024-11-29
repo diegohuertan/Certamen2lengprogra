@@ -90,14 +90,24 @@ func (d *dispatcher) ejecutarProceso(procesoActual <-chan *bcp, tiempoEjecucion 
 					tiempoBloqueo = 0
 
 				}
-
+				fmt.Println("iteracion: ", d.contadorDisp)
+				err := AgregarLinea("Salida.txt", strconv.Itoa(d.contadorDisp)+"					 "+scanner.Text()+"					"+proceso.nombreproceso+"				"+strconv.Itoa(proceso.contadorProg))
+				if err != nil {
+					fmt.Println("Error al agregar línea:", err)
+				}
+				d.contadorDisp++
+				proceso.contadorProg++
+				d.colaprocesos[1].contadorProg = d.colaprocesos[1].contadorProg + 1
 				fmt.Println(scanner.Text())
+				if strings.HasPrefix(scanner.Text(), "F") {
+					d.colaprocesos[1].estado = "Finalizado"
+					done <- true
+					break
+				}
+
 				lineasEjecutadas++
 				if lineasEjecutadas == tiempoEjecucion {
-					proceso.contadorProg = linea + 1
 					fmt.Printf("Contador actualizado del proceso %d: %d\n", proceso.pid, proceso.contadorProg)
-					d.contadorDisp = linea + 1
-					fmt.Printf("Contador del dispatcher actualizado: %d\n", d.contadorDisp)
 					done <- true
 					break
 				}
@@ -144,6 +154,28 @@ func leerArchivo(nombreArchivo string, lineas chan<- string, numeros chan<- int,
 	close(numeros)
 }
 
+// funcion para agregar lineas al archivo
+func AgregarLinea(rutaArchivo, linea string) error {
+	archivo, err := os.OpenFile(rutaArchivo, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return fmt.Errorf("error al abrir el archivo: %v", err)
+	}
+	defer archivo.Close()
+
+	escritor := bufio.NewWriter(archivo)
+
+	_, err = escritor.WriteString(linea + "\n")
+	if err != nil {
+		return fmt.Errorf("error al escribir en el archivo: %v", err)
+	}
+	err = escritor.Flush()
+	if err != nil {
+		return fmt.Errorf("error al flush del búfer: %v", err)
+	}
+
+	return nil
+}
+
 func main() {
 	lineas := make(chan string)
 	numeros := make(chan int)
@@ -175,6 +207,11 @@ func main() {
 
 	wg.Wait()
 	wgReaders.Wait()
+	err := AgregarLinea("Salida.txt", "#Tiempo de CPU		Tipo Instrucción		Proceso/Despachador		Valor CP")
+	if err != nil {
+		fmt.Println("Error al agregar línea:", err)
+	}
+
 	indice := 0
 	var d dispatcher
 	d.contadorDisp = 1
@@ -184,36 +221,54 @@ func main() {
 
 	go d.ejecutarProceso(procesoActual, 5, done, &wg)
 
-	for i := 1; i <= 6; i++ {
-		fmt.Println("iteracion: ", d.contadorDisp)
+	for i := 1; i < 6; i++ {
 
 		// Agregar procesos a la cola
 		if indice < len(Tiempo_ejecucion) {
 			x := Tiempo_ejecucion[indice]
-			if d.contadorDisp == x {
+			if d.contadorDisp == x || d.contadorDisp < x {
 				proceso := bcp{
 					pid:           100 + indice,
 					estado:        "Listo",
 					contadorProg:  1,
 					nombreproceso: nombre_proceso[indice],
 				}
+
 				d.agregarProceso(proceso.pid, proceso.estado, proceso.contadorProg, proceso.nombreproceso)
-				fmt.Println("Proceso", proceso.nombreproceso, "agregado a la cola de procesos")
+
 				indice++
 			}
 		}
-
-		// Procesar procesos en la cola
-		if len(d.colaprocesos) > 0 {
-			// Enviar el puntero del primer proceso en la cola a la goroutine
+		if len(d.colaprocesos) > 1 {
+			err := AgregarLinea("Salida.txt", strconv.Itoa(d.contadorDisp)+"						PULL					Dispacher ")
+			d.contadorDisp++
+			err2 := AgregarLinea("Salida.txt", strconv.Itoa(d.contadorDisp)+"						LOAD					 "+d.colaprocesos[0].nombreproceso+"		")
+			d.contadorDisp++
+			err3 := AgregarLinea("Salida.txt", strconv.Itoa(d.contadorDisp)+"						EXEC					Dispacher ")
+			d.contadorDisp++
+			if err != nil || err2 != nil || err3 != nil {
+				fmt.Println("Error al agregar línea:", err)
+			}
+		}
+		if len(d.colaprocesos) == 0 {
 			proceso := &d.colaprocesos[0]
 			procesoActual <- proceso
-
 			<-done
 
-			// Mover el proceso al final de la cola
-			d.colaprocesos = append(d.colaprocesos[1:], *proceso)
 		}
+		if len(d.colaprocesos) > 1 {
+			proceso := &d.colaprocesos[0]
+			d.colaprocesos = append(d.colaprocesos[1:], *proceso)
+			procesoActual <- proceso
+			<-done
+		}
+		for o := 0; o < len(d.colaprocesos); o++ {
+			if d.colaprocesos[o].estado == "Finalizado" {
+				d.colaprocesos = append(d.colaprocesos[:o], d.colaprocesos[o+1:]...)
+
+			}
+		}
+
 	}
 
 	// Cerrar canal y esperar gorrutina
